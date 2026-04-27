@@ -12,7 +12,6 @@
       --text: #f4f3ef;
       --muted: #b7b3aa;
       --accent: #4fd0ff;
-      --danger: #ff4f6a;
       --radius: 14px;
     }
 
@@ -34,121 +33,64 @@
 
     .page {
       width: 100%;
-      max-width: 960px;
+      max-width: 720px;
       margin: 0 auto;
     }
 
     header {
-      margin-bottom: 40px;
+      text-align: center;
+      margin-bottom: 28px;
     }
 
-    .brand-logo {
-      font-size: 2.4rem;
+    .brand-logo-img {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 10px;
+      border: 1px solid rgba(79, 208, 255, 0.4);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .brand-name {
+      font-size: 1.8rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: none;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
     }
 
     .tagline {
-      margin-top: 8px;
-      font-size: 1rem;
+      margin-top: 6px;
+      font-size: 0.95rem;
       color: var(--muted);
       max-width: 26rem;
       line-height: 1.5;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     main {
       display: grid;
-      gap: 28px;
+      gap: 16px;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 640px) {
       main {
-        grid-template-columns: 1.3fr 1fr;
-        align-items: start;
+        grid-template-columns: 1fr 1fr;
       }
-    }
-
-    .hero-card {
-      background: rgba(5, 6, 10, 0.8);
-      border-radius: 24px;
-      padding: 24px 24px 28px;
-      border: 1px solid rgba(79, 208, 255, 0.12);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
-    }
-
-    .hero-title {
-      font-size: 1.9rem;
-      margin: 0 0 10px;
-      font-weight: 700;
-    }
-
-    .hero-text {
-      margin: 0 0 20px;
-      color: var(--muted);
-      font-size: 0.98rem;
-      line-height: 1.6;
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-size: 0.95rem;
-      text-decoration: none;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
-        transform 0.08s ease;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #020308;
-      font-weight: 600;
-    }
-
-    .btn-primary:hover {
-      background: #76ddff;
-      transform: translateY(-1px);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border-color: rgba(180, 176, 166, 0.5);
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-1px);
-    }
-
-    .products {
-      display: grid;
-      gap: 14px;
     }
 
     .product-card {
       background: var(--bg-elevated);
       border-radius: var(--radius);
-      padding: 16px 18px 18px;
-      border: 1px solid rgba(79, 208, 255, 0.1);
-    }
-
-    .product-name {
-      font-size: 1.05rem;
-      margin: 0 0 4px;
-      font-weight: 700;
+      padding: 16px 16px 18px;
+      border: 1px solid rgba(79, 208, 255, 0.12);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 160px;
     }
 
     .product-meta {
@@ -156,19 +98,27 @@
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+    }
+
+    .product-name {
+      font-size: 1.05rem;
+      margin: 0 0 6px;
+      font-weight: 700;
     }
 
     .product-text {
-      margin: 0;
+      margin: 0 0 12px;
       font-size: 0.9rem;
       color: var(--muted);
       line-height: 1.5;
     }
 
     .product-link {
-      display: inline-block;
-      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 6px;
       font-size: 0.9rem;
       color: var(--accent);
       text-decoration: none;
@@ -179,53 +129,62 @@
     }
 
     footer {
-      margin-top: 32px;
+      margin-top: 24px;
       font-size: 0.8rem;
       color: var(--muted);
-      text-align: left;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="page">
     <header>
-      <div class="brand-logo">Complete</div>
-      <p class="tagline">A calm home for the tools you build: planner, calendar, and whatever comes next.</p>
+      <!-- Make sure complete.png is in this repo root -->
+      <img src="complete.png" alt="Complete logo" class="brand-logo-img">
+      <div class="brand-name">Complete</div>
+      <p class="tagline">
+        A calm home for what you build: planner, calendar, and whatever comes next.
+      </p>
     </header>
 
     <main>
-      <section class="hero-card">
-        <h1 class="hero-title">Complete</h1>
-        <p class="hero-text">
-          A calm home for the tools you build: planner, calendar, and whatever comes next.
-        </p>
-        <div class="button-row">
-          <a class="btn btn-primary" href="https://completeapps.github.io/planner/" target="_blank" rel="noopener">
-            Open Planner
-          </a>
-          <a class="btn btn-ghost" href="https://completeapps.github.io/calendar/" target="_blank" rel="noopener">
-            Open Calendar
-          </a>
-        </div>
-      </section>
-
-      <aside class="products">
-        <article class="product-card">
+      <article class="product-card">
+        <div>
           <div class="product-meta">Product · Planner</div>
           <h2 class="product-name">Complete Planner</h2>
           <p class="product-text">
-            A notebook-style homework planner that lives in your browser. Add assignments, see what’s due, and let overdue tasks call you out.
+            A notebook‑style homework planner that lives in your browser. Add assignments, group by class,
+            and see overdue work before it blindsides you.
           </p>
-        </article>
+        </div>
+        <a
+          class="product-link"
+          href="https://completeapps.github.io/planner/"
+          target="_blank"
+          rel="noopener"
+        >
+          Open Planner →
+        </a>
+      </article>
 
-        <article class="product-card">
+      <article class="product-card">
+        <div>
           <div class="product-meta">Product · Calendar</div>
           <h2 class="product-name">Complete Calendar</h2>
           <p class="product-text">
-            A calendar that reads from your Complete planner and shows your week at a glance, so you can see crunch days before they hit.
+            A calendar that reads from your Complete planner and lays your tasks out on a month, so you
+            can see crunch days and easy days at a glance.
           </p>
-        </article>
-      </aside>
+        </div>
+        <a
+          class="product-link"
+          href="https://completeapps.github.io/calendar/"
+          target="_blank"
+          rel="noopener"
+        >
+          Open Calendar →
+        </a>
+      </article>
     </main>
 
     <footer>

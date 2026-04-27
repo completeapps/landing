@@ -1,1 +1,239 @@
-stuff
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Complete – All your school work in one place</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- TODO: add real Sabon webfont via @font-face or service -->
+  <style>
+    :root {
+      --bg: #05060a;
+      --bg-elevated: #10121a;
+      --text: #f4f3ef;
+      --muted: #b7b3aa;
+      --accent: #4fd0ff;
+      --danger: #ff4f6a;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #151827 0, #05060a 55%);
+      color: var(--text);
+      font-family: "Sabon", "Garamond", "Georgia", serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 40px;
+    }
+
+    .brand-logo {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: none;
+    }
+
+    .tagline {
+      margin-top: 8px;
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 26rem;
+      line-height: 1.5;
+    }
+
+    main {
+      display: grid;
+      gap: 28px;
+    }
+
+    @media (min-width: 768px) {
+      main {
+        grid-template-columns: 1.3fr 1fr;
+        align-items: start;
+      }
+    }
+
+    .hero-card {
+      background: rgba(5, 6, 10, 0.8);
+      border-radius: 24px;
+      padding: 24px 24px 28px;
+      border: 1px solid rgba(79, 208, 255, 0.12);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-title {
+      font-size: 1.5rem;
+      margin: 0 0 8px;
+      font-weight: 700;
+    }
+
+    .hero-text {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+        transform 0.08s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #020308;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background: #76ddff;
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border-color: rgba(180, 176, 166, 0.5);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .products {
+      display: grid;
+      gap: 14px;
+    }
+
+    .product-card {
+      background: var(--bg-elevated);
+      border-radius: var(--radius);
+      padding: 16px 18px 18px;
+      border: 1px solid rgba(79, 208, 255, 0.1);
+    }
+
+    .product-name {
+      font-size: 1.05rem;
+      margin: 0 0 4px;
+      font-weight: 700;
+    }
+
+    .product-meta {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .product-text {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .product-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .product-link:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      margin-top: 32px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand-logo">Complete</div>
+      <p class="tagline">One calm place for your planner, calendar, and whatever you build next.</p>
+    </header>
+
+    <main>
+      <section class="hero-card">
+        <h1 class="hero-title">All your school work, in one place.</h1>
+        <p class="hero-text">
+          Complete keeps your homework and due dates together so you don’t have to chase screenshots,
+          tabs, and notebooks. Open it, see what matters, and get back to work.
+        </p>
+        <div class="button-row">
+          <!-- TODO: replace # with your real URLs -->
+          <a class="btn btn-primary" href="#">Open Planner</a>
+          <a class="btn btn-ghost" href="#">Open Calendar</a>
+        </div>
+      </section>
+
+      <aside class="products">
+        <article class="product-card">
+          <div class="product-meta">Product · Planner</div>
+          <h2 class="product-name">Complete Planner</h2>
+          <p class="product-text">
+            A simple homework planner that lives in your browser. Add assignments fast, see what’s
+            due, and let overdue tasks call you out.
+          </p>
+          <a class="product-link" href="#">Go to Planner →</a>
+        </article>
+
+        <article class="product-card">
+          <div class="product-meta">Product · Calendar</div>
+          <h2 class="product-name">Complete Calendar</h2>
+          <p class="product-text">
+            A calendar that reads from your Complete planner and shows your week at a glance, so you
+            can see crunch days before they hit.
+          </p>
+          <a class="product-link" href="#">Go to Calendar →</a>
+        </article>
+      </aside>
+    </main>
+
+    <footer>
+      Built by a student, for students. Complete is where your school life comes together.
+    </footer>
+  </div>
+</body>
+</html>

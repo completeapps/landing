@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Admin controls (like wishlist) -->
+  <div class="admin-controls">
+    <button id="adminToggle" class="admin-btn">Admin</button>
+  </div>
+
   <div class="page">
     <header class="site-header">
       <img src="complete.png" alt="Complete logo" class="brand-logo-img">
@@ -19,45 +24,302 @@
       <p class="tagline">a collection for small, useful web apps.</p>
     </header>
 
-    <main>
-      <!-- Apps grid gets filled by JS -->
-      <section id="appsSection">
-        <div class="cards-grid" id="appsGrid">
-          <!-- JS will inject app cards here -->
-        </div>
-      </section>
+    <main class="apps-section">
+      <div class="section-header">
+        <h2>Apps</h2>
+        <button id="addAppButton" class="add-btn admin-only" style="display:none;">+ Add App</button>
+      </div>
 
-      <!-- Admin panel (hidden until login) -->
-      <section class="admin-panel" id="adminPanel">
-        <h2 class="admin-title">Admin: Add App</h2>
-        <div class="admin-form">
-          <input type="text" id="appName" class="form-input" placeholder="App name (e.g., Complete Planner)">
-          <textarea id="appDescription" class="form-input" placeholder="Short description"></textarea>
-          <input type="url" id="appLink" class="form-input" placeholder="App link (https://...)">
-          <label class="checkbox-label">
-            <input type="checkbox" id="appWip">
-            Work in progress
-          </label>
-          <button id="saveApp" class="admin-button">Save app</button>
-        </div>
-      </section>
-
-      <!-- Admin login -->
-      <section class="admin-login" id="adminLoginSection">
-        <h2 class="admin-title">Admin Login</h2>
-        <input type="password" id="adminPassword" class="form-input" placeholder="Enter admin password">
-        <button id="adminLoginButton" class="admin-button">Login</button>
-      </section>
+      <div class="apps-grid" id="appsGrid">
+        <!-- App cards will be injected here from Firebase -->
+      </div>
     </main>
   </div>
 
   <footer class="footer">
-    <div class="footer-inner">
-      <img src="perplexity.png" alt="Perplexity logo" class="footer-logo">
-      <span>built by perplexity</span>
-    </div>
+    <a href="https://www.perplexity.ai" class="footer-link" target="_blank" rel="noopener noreferrer">
+      <img src="perplexity.png" alt="Perplexity logo" class="perplexity-logo">
+      <span class="footer-text">built by perplexity</span>
+    </a>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Admin Login Modal -->
+  <div class="modal" id="adminLoginModal">
+    <div class="modal-content">
+      <div class="info-header">
+        <h3>Admin Login</h3>
+        <button class="modal-close" id="adminLoginClose">×</button>
+      </div>
+      <input type="password" id="adminPassword" placeholder="Enter password" class="form-input">
+      <div class="form-buttons">
+        <button id="adminLoginConfirm" class="save-btn">Login</button>
+        <button id="adminLoginCancel" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add App Modal -->
+  <div class="modal" id="addAppModal">
+    <div class="modal-content">
+      <div class="info-header">
+        <h3>Add App</h3>
+        <button class="modal-close" id="addAppClose">×</button>
+      </div>
+
+      <input type="text" id="appName" class="form-input" placeholder="App name (e.g., Complete Planner)">
+      <textarea id="appDescription" class="form-textarea" placeholder="Short description"></textarea>
+      <input type="url" id="appLink" class="form-input" placeholder="App link (https://...)">
+      <input type="text" id="appImage" class="form-input" placeholder="Image filename (e.g., planner.png)">
+
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#999;margin-bottom:15px;">
+        <input type="checkbox" id="appWip">
+        Work in progress
+      </label>
+
+      <div class="form-buttons">
+        <button id="saveApp" class="save-btn">Save App</button>
+        <button id="cancelApp" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase + app logic -->
+  <script type="module">
+    // Dark / light mode toggle (your original logic)
+    window.addEventListener('DOMContentLoaded', () => {
+      const body = document.body;
+      const modeToggle = document.getElementById('modeToggle');
+      const modeIcon = document.getElementById('modeIcon');
+
+      const savedMode = localStorage.getItem('complete-theme');
+      if (savedMode === 'light') {
+        body.classList.add('light');
+        modeIcon.textContent = '○'; // light
+      } else {
+        body.classList.remove('light');
+        modeIcon.textContent = '●'; // dark
+      }
+
+      modeToggle.addEventListener('click', () => {
+        const isLight = body.classList.toggle('light');
+        localStorage.setItem('complete-theme', isLight ? 'light' : 'dark');
+        modeIcon.textContent = isLight ? '○' : '●';
+      });
+    });
+  </script>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getDatabase, ref, onValue, push, set } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+
+    // Your landing Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBP0QSuhQ2OrWmvzCKIGF-6rd7d62HMYD8",
+      authDomain: "landing-87909.firebaseapp.com",
+      databaseURL: "https://landing-87909-default-rtdb.firebaseio.com",
+      projectId: "landing-87909",
+      storageBucket: "landing-87909.firebasestorage.app",
+      messagingSenderId: "951882714575",
+      appId: "1:951882714575:web:c0cbe989b0d3a6601356ba",
+      measurementId: "G-RWPLFXLBCH"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Simple admin password (change this)
+    const ADMIN_PASSWORD = '0000';
+
+    const adminToggle = document.getElementById('adminToggle');
+    const addAppButton = document.getElementById('addAppButton');
+    const appsGrid = document.getElementById('appsGrid');
+
+    const adminLoginModal = document.getElementById('adminLoginModal');
+    const adminLoginClose = document.getElementById('adminLoginClose');
+    const adminLoginCancel = document.getElementById('adminLoginCancel');
+    const adminLoginConfirm = document.getElementById('adminLoginConfirm');
+    const adminPasswordInput = document.getElementById('adminPassword');
+
+    const addAppModal = document.getElementById('addAppModal');
+    const addAppClose = document.getElementById('addAppClose');
+    const cancelApp = document.getElementById('cancelApp');
+    const saveApp = document.getElementById('saveApp');
+
+    const appNameInput = document.getElementById('appName');
+    const appDescriptionInput = document.getElementById('appDescription');
+    const appLinkInput = document.getElementById('appLink');
+    const appImageInput = document.getElementById('appImage');
+    const appWipInput = document.getElementById('appWip');
+
+    function isAdmin() {
+      return sessionStorage.getItem('isLandingAdmin') === 'true';
+    }
+
+    function setAdminUI() {
+      if (isAdmin()) {
+        adminToggle.classList.add('active');
+        adminToggle.textContent = 'Admin (On)';
+        addAppButton.style.display = 'inline-block';
+        document.querySelectorAll('.admin-only').forEach(el => {
+          el.style.display = '';
+        });
+      } else {
+        adminToggle.classList.remove('active');
+        adminToggle.textContent = 'Admin';
+        addAppButton.style.display = 'none';
+        document.querySelectorAll('.admin-only').forEach(el => {
+          el.style.display = 'none';
+        });
+      }
+    }
+
+    function openModal(modal) {
+      modal.classList.add('active');
+    }
+
+    function closeModal(modal) {
+      modal.classList.remove('active');
+    }
+
+    // Admin button
+    adminToggle.addEventListener('click', () => {
+      if (isAdmin()) {
+        // logout
+        sessionStorage.removeItem('isLandingAdmin');
+        setAdminUI();
+      } else {
+        openModal(adminLoginModal);
+        adminPasswordInput.value = '';
+        adminPasswordInput.focus();
+      }
+    });
+
+    adminLoginClose.addEventListener('click', () => closeModal(adminLoginModal));
+    adminLoginCancel.addEventListener('click', () => closeModal(adminLoginModal));
+
+    adminLoginConfirm.addEventListener('click', () => {
+      const val = adminPasswordInput.value;
+      if (val === ADMIN_PASSWORD) {
+        sessionStorage.setItem('isLandingAdmin', 'true');
+        setAdminUI();
+        closeModal(adminLoginModal);
+      } else {
+        alert('Incorrect password');
+      }
+    });
+
+    // Add App modal
+    addAppButton.addEventListener('click', () => {
+      if (!isAdmin()) return;
+      appNameInput.value = '';
+      appDescriptionInput.value = '';
+      appLinkInput.value = '';
+      appImageInput.value = '';
+      appWipInput.checked = false;
+      openModal(addAppModal);
+    });
+
+    addAppClose.addEventListener('click', () => closeModal(addAppModal));
+    cancelApp.addEventListener('click', () => closeModal(addAppModal));
+
+    saveApp.addEventListener('click', async () => {
+      if (!isAdmin()) return;
+
+      const name = appNameInput.value.trim();
+      const description = appDescriptionInput.value.trim();
+      const link = appLinkInput.value.trim();
+      const image = appImageInput.value.trim();
+      const wip = appWipInput.checked;
+
+      if (!name || !description) {
+        alert('App name and description are required.');
+        return;
+      }
+
+      const appsRef = ref(db, 'apps');
+      const newRef = push(appsRef);
+
+      await set(newRef, {
+        name,
+        description,
+        link,
+        image,
+        wip: !!wip
+      });
+
+      closeModal(addAppModal);
+    });
+
+    // Render apps
+    function renderApps(data) {
+      appsGrid.innerHTML = '';
+
+      if (!data) return;
+
+      Object.keys(data).forEach(id => {
+        const appData = data[id];
+
+        const card = document.createElement('div');
+        card.className = 'wishlist-item'; // same box style as wishlist
+
+        let html = '';
+
+        // Image (using filename from repo)
+        if (appData.image && appData.image.trim() !== '') {
+          const safeImage = appData.image.trim();
+          html += `<img src="${safeImage}" alt="${appData.name || ''}" class="item-image" onerror="this.style.display='none'">`;
+        }
+
+        // Work in progress badge
+        if (appData.wip) {
+          html += `
+            <div style="margin-bottom: 8px;">
+              <span style="
+                background: #facc15;
+                color: #000;
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 0.75em;
+                font-weight: 600;
+              ">WIP</span>
+            </div>
+          `;
+        }
+
+        // Header (no checkbox, just name)
+        html += `
+          <div class="item-header">
+            <h3 class="item-name">${appData.name || ''}</h3>
+          </div>
+        `;
+
+        // Description
+        if (appData.description) {
+          html += `<p class="item-price">${appData.description}</p>`;
+        }
+
+        // Actions (open link)
+        html += `<div class="item-actions">`;
+        if (appData.link) {
+          const safeLink = appData.link;
+          html += `<a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="item-link">Open</a>`;
+        }
+        html += `</div>`;
+
+        card.innerHTML = html;
+        appsGrid.appendChild(card);
+      });
+    }
+
+    // Listen to apps in Firebase
+    const appsRef = ref(db, 'apps');
+    onValue(appsRef, snapshot => {
+      const data = snapshot.val();
+      renderApps(data);
+    });
+
+    // Initial admin UI state
+    setAdminUI();
+  </script>
 </body>
 </html>

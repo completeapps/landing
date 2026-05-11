@@ -31,8 +31,7 @@ body {
   color: var(--text);
   font-family: "Courier New", monospace;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   padding: 24px;
 }
 
@@ -41,10 +40,12 @@ body.light {
   background: radial-gradient(circle at top, #e5e7ff 0, #f5f5f5 55%);
 }
 
+/* Page wrapper grows; footer sticks at bottom */
 .page {
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
+  flex: 1 0 auto;
 }
 
 /* Header */
@@ -113,7 +114,7 @@ body.light .mode-toggle {
   color: var(--accent);
 }
 
-/* Layout */
+/* Apps grid */
 .cards-grid {
   display: grid;
   gap: 16px;
@@ -212,12 +213,71 @@ body.light .product-link {
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
 }
 
-/* Footer */
+/* Admin sections */
+.admin-panel,
+.admin-login {
+  margin-top: 32px;
+}
+
+.admin-title {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+textarea.form-input {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.admin-button {
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--text);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.admin-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Footer pinned to bottom */
 .footer {
+  flex-shrink: 0;
   margin-top: 24px;
   font-size: 0.8rem;
   color: var(--muted);
-  text-align: left;
+  text-align: center;
 }
 
 .footer-inner {

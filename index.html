@@ -4,147 +4,19 @@
   <meta charset="UTF-8" />
   <title>Complete – A calm home for your tools</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <style>
-    :root {
-      --bg: #05060a;
-      --bg-elevated: #10121a;
-      --text: #f4f3ef;
-      --muted: #b7b3aa;
-      --accent: #4fd0ff;
-      --radius: 14px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #151827 0, #05060a 55%);
-      color: var(--text);
-      font-family: "Sabon", "Garamond", "Georgia", serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
-    }
-
-    .page {
-      width: 100%;
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 28px;
-    }
-
-    .brand-logo-img {
-      width: 72px;
-      height: 72px;
-      border-radius: 18px;
-      object-fit: cover;
-      display: block;
-      margin: 0 auto 10px;
-      border: 1px solid rgba(79, 208, 255, 0.4);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    .brand-name {
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .tagline {
-      margin-top: 6px;
-      font-size: 0.95rem;
-      color: var(--muted);
-      max-width: 26rem;
-      line-height: 1.5;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    main {
-      display: grid;
-      gap: 16px;
-    }
-
-    @media (min-width: 640px) {
-      main {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    .product-card {
-      background: var(--bg-elevated);
-      border-radius: var(--radius);
-      padding: 16px 16px 18px;
-      border: 1px solid rgba(79, 208, 255, 0.12);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 160px;
-    }
-
-    .product-meta {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .product-name {
-      font-size: 1.05rem;
-      margin: 0 0 6px;
-      font-weight: 700;
-    }
-
-    .product-text {
-      margin: 0 0 12px;
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .product-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 6px;
-      font-size: 0.9rem;
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .product-link:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      margin-top: 24px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-align: center;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
     <header>
-      <!-- Make sure complete.png is in this repo root -->
       <img src="complete.png" alt="Complete logo" class="brand-logo-img">
       <div class="brand-name">Complete</div>
       <p class="tagline">
         A calm home for what you build: planner, calendar, and whatever comes next.
       </p>
+      <div class="mode-toggle" id="modeToggle" aria-label="Toggle theme" title="Toggle theme">
+        <span class="mode-icon" id="modeIcon">●</span>
+      </div>
     </header>
 
     <main>
@@ -188,8 +60,15 @@
     </main>
 
     <footer>
-      Built by a student, for students. Complete is where your school life comes together.
+      <span class="footer-main">
+        Built by a student, for students. Complete is where your school life comes together.
+      </span>
+      <span class="footer-made-with">
+        Made with <a href="https://perplexity.ai" target="_blank" rel="noopener" class="footer-link">Perplexity</a>
+      </span>
     </footer>
   </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

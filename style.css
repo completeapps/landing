@@ -7,7 +7,7 @@
 /* Base */
 body {
   font-family: 'Courier New', monospace;
-  background: #000;         /* solid dark, no purple */
+  background: #000;
   color: #fff;
   min-height: 100vh;
   padding: 20px;
@@ -17,11 +17,11 @@ body {
 
 /* Light mode */
 body.light {
-  background: #f5f5f5;      /* solid light, no purple */
+  background: #f5f5f5;
   color: #000;
 }
 
-/* Main page wrapper */
+/* Page wrapper */
 .page {
   width: 100%;
   max-width: 1100px;
@@ -29,7 +29,7 @@ body.light {
   flex: 1 0 auto;
 }
 
-/* Admin controls (top-right) – from wishlist */
+/* Admin controls (like wishlist) */
 .admin-controls {
   position: fixed;
   top: 20px;
@@ -129,8 +129,8 @@ body.light .mode-toggle {
   font-size: 0.8rem;
 }
 
-/* Section header */
-.apps-section {
+/* Section header / separator */
+.websites-section {
   max-width: 100%;
 }
 
@@ -138,8 +138,8 @@ body.light .mode-toggle {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 15px;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #333;
 }
 
@@ -149,7 +149,7 @@ body.light .mode-toggle {
   letter-spacing: -0.5px;
 }
 
-/* Add button – from wishlist */
+/* Add button – like wishlist */
 .add-btn {
   background: #fff;
   color: #000;
@@ -166,21 +166,21 @@ body.light .mode-toggle {
   background: #ddd;
 }
 
-/* Grid – based on wishlist */
-.apps-grid {
+/* Grid – like wishlist layout */
+.websites-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
 
 @media (max-width: 1400px) {
-  .apps-grid {
+  .websites-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 1024px) {
-  .apps-grid {
+  .websites-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -194,12 +194,12 @@ body.light .mode-toggle {
     right: 15px;
     flex-direction: column;
   }
-  .apps-grid {
+  .websites-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* Card style – copied from .wishlist-item */
+/* Card style – same as wishlist */
 .wishlist-item {
   border: 1px solid #333;
   padding: 25px;
@@ -246,7 +246,7 @@ body.light .item-image {
   flex: 1;
 }
 
-/* Description styled like price text */
+/* Description */
 .item-price {
   font-size: 14px;
   color: #999;
@@ -288,7 +288,43 @@ body.light .item-link:hover {
   background: #eee;
 }
 
-/* Modals – from wishlist */
+/* Admin item buttons */
+.item-btn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #fff;
+  font-size: 12px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.item-btn:hover {
+  border-color: #999;
+  color: #999;
+}
+
+body.light .item-btn {
+  border-color: #ccc;
+  color: #000;
+}
+
+body.light .item-btn:hover {
+  border-color: #999;
+  color: #333;
+}
+
+/* WIP badge */
+.badge-wip {
+  background: #facc15;
+  color: #000;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75em;
+  font-weight: 600;
+}
+
+/* Modals (from wishlist) */
 .modal {
   display: none;
   position: fixed;
@@ -352,7 +388,7 @@ body.light .item-link:hover {
   padding-right: 15px;
 }
 
-/* Form inputs – from wishlist */
+/* Form inputs (from wishlist) */
 .form-input,
 .form-textarea {
   width: 100%;
@@ -379,6 +415,15 @@ body.light .item-link:hover {
 .form-textarea:focus {
   outline: none;
   border-color: #999;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 15px;
 }
 
 .form-buttons {
@@ -418,7 +463,7 @@ body.light .item-link:hover {
   color: #999;
 }
 
-/* Footer pinned to bottom – adapted from wishlist */
+/* Footer (same structure as wishlist, with Perplexity tweak) */
 .footer {
   margin-top: 40px;
   padding: 20px 20px 0 20px;

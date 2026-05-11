@@ -10,50 +10,53 @@
   <div class="page">
     <header class="site-header">
       <img src="complete.png" alt="Complete logo" class="brand-logo-img">
+
       <button class="mode-toggle" id="modeToggle" aria-label="Toggle light or dark mode">
-        <span class="mode-icon">☾</span>
+        <span class="mode-icon" id="modeIcon">●</span>
       </button>
+
       <h1 class="brand-name">COMPLETE</h1>
       <p class="tagline">a collection for small, useful web apps.</p>
     </header>
 
-    <main class="cards-grid">
-      <article class="product-card">
-        <span class="status-badge">Work in progress</span>
-        <div class="product-content">
-          <h2 class="product-name">Complete Planner</h2>
-          <p class="product-text">
-            A simple planner in your browser. Add homework, sort it by class,
-            and quickly see what’s coming up and what’s late.
-          </p>
+    <main>
+      <!-- Apps grid gets filled by JS -->
+      <section id="appsSection">
+        <div class="cards-grid" id="appsGrid">
+          <!-- JS will inject app cards here -->
         </div>
-        <a class="product-link" href="https://completeapps.github.io/planner/">
-          <span>Open Planner →</span>
-        </a>
-      </article>
+      </section>
 
-      <article class="product-card">
-        <span class="status-badge">Work in progress</span>
-        <div class="product-content">
-          <h2 class="product-name">Complete Calendar</h2>
-          <p class="product-text">
-            A calendar that pulls from the Complete Planner and drops your tasks
-            onto a monthly view, so you can spot busy days and lighter ones fast.
-          </p>
+      <!-- Admin panel (hidden until login) -->
+      <section class="admin-panel" id="adminPanel">
+        <h2 class="admin-title">Admin: Add App</h2>
+        <div class="admin-form">
+          <input type="text" id="appName" class="form-input" placeholder="App name (e.g., Complete Planner)">
+          <textarea id="appDescription" class="form-input" placeholder="Short description"></textarea>
+          <input type="url" id="appLink" class="form-input" placeholder="App link (https://...)">
+          <label class="checkbox-label">
+            <input type="checkbox" id="appWip">
+            Work in progress
+          </label>
+          <button id="saveApp" class="admin-button">Save app</button>
         </div>
-        <a class="product-link" href="https://completeapps.github.io/calendar/">
-          <span>Open Calendar →</span>
-        </a>
-      </article>
+      </section>
+
+      <!-- Admin login -->
+      <section class="admin-login" id="adminLoginSection">
+        <h2 class="admin-title">Admin Login</h2>
+        <input type="password" id="adminPassword" class="form-input" placeholder="Enter admin password">
+        <button id="adminLoginButton" class="admin-button">Login</button>
+      </section>
     </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        <img src="perplexity.png" alt="Perplexity logo" class="footer-logo">
-        <span>built by perplexity</span>
-      </div>
-    </footer>
   </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <img src="perplexity.png" alt="Perplexity logo" class="footer-logo">
+      <span>built by perplexity</span>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>

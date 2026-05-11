@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Complete – a collection of small, useful web apps</title>
+  <title>Complete – a collection of small, useful websites</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Admin controls (like wishlist) -->
+  <!-- Admin controls (same pattern as wishlist) -->
   <div class="admin-controls">
     <button id="adminToggle" class="admin-btn">Admin</button>
   </div>
@@ -21,17 +21,17 @@
       </button>
 
       <h1 class="brand-name">COMPLETE</h1>
-      <p class="tagline">a collection for small, useful web apps.</p>
+      <p class="tagline">a collection for small, useful websites.</p>
     </header>
 
-    <main class="apps-section">
+    <main class="websites-section">
       <div class="section-header">
-        <h2>Apps</h2>
-        <button id="addAppButton" class="add-btn admin-only" style="display:none;">+ Add App</button>
+        <h2>Websites</h2>
+        <button id="addWebsiteButton" class="add-btn admin-only" style="display:none;">+ Add Website</button>
       </div>
 
-      <div class="apps-grid" id="appsGrid">
-        <!-- App cards will be injected here from Firebase -->
+      <div class="websites-grid" id="websitesGrid">
+        <!-- Website cards rendered from Firebase -->
       </div>
     </main>
   </div>
@@ -39,7 +39,7 @@
   <footer class="footer">
     <a href="https://www.perplexity.ai" class="footer-link" target="_blank" rel="noopener noreferrer">
       <img src="perplexity.png" alt="Perplexity logo" class="perplexity-logo">
-      <span class="footer-text">built with Perplexity</span>
+      <span class="footer-text"><strong>PERPLEXITY</strong> BUILT WITH</span>
     </a>
   </footer>
 
@@ -58,34 +58,58 @@
     </div>
   </div>
 
-  <!-- Add App Modal -->
-  <div class="modal" id="addAppModal">
+  <!-- Add Website Modal -->
+  <div class="modal" id="addWebsiteModal">
     <div class="modal-content">
       <div class="info-header">
-        <h3>Add App</h3>
-        <button class="modal-close" id="addAppClose">×</button>
+        <h3>Add Website</h3>
+        <button class="modal-close" id="addWebsiteClose">×</button>
       </div>
 
-      <input type="text" id="appName" class="form-input" placeholder="App name (e.g., Complete Planner)">
-      <textarea id="appDescription" class="form-textarea" placeholder="Short description"></textarea>
-      <input type="url" id="appLink" class="form-input" placeholder="App link (https://...)">
-      <input type="text" id="appImage" class="form-input" placeholder="Image filename (e.g., planner.png)">
+      <input type="text" id="websiteName" class="form-input" placeholder="Website name (e.g., Complete Planner)">
+      <textarea id="websiteDescription" class="form-textarea" placeholder="Short description"></textarea>
+      <input type="url" id="websiteLink" class="form-input" placeholder="Website link (https://...)">
+      <input type="text" id="websiteImage" class="form-input" placeholder="Image filename (e.g., planner.png)">
 
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#999;margin-bottom:15px;">
-        <input type="checkbox" id="appWip">
+      <label class="checkbox-row">
+        <input type="checkbox" id="websiteWip">
         Work in progress
       </label>
 
       <div class="form-buttons">
-        <button id="saveApp" class="save-btn">Save App</button>
-        <button id="cancelApp" class="cancel-btn">Cancel</button>
+        <button id="saveWebsite" class="save-btn">Save Website</button>
+        <button id="cancelWebsite" class="cancel-btn">Cancel</button>
       </div>
     </div>
   </div>
 
-  <!-- Firebase + app logic -->
+  <!-- Edit Website Modal -->
+  <div class="modal" id="editWebsiteModal">
+    <div class="modal-content">
+      <div class="info-header">
+        <h3>Edit Website</h3>
+        <button class="modal-close" id="editWebsiteClose">×</button>
+      </div>
+
+      <input type="text" id="editWebsiteName" class="form-input" placeholder="Website name">
+      <textarea id="editWebsiteDescription" class="form-textarea" placeholder="Short description"></textarea>
+      <input type="url" id="editWebsiteLink" class="form-input" placeholder="Website link (https://...)">
+      <input type="text" id="editWebsiteImage" class="form-input" placeholder="Image filename (e.g., planner.png)">
+
+      <label class="checkbox-row">
+        <input type="checkbox" id="editWebsiteWip">
+        Work in progress
+      </label>
+
+      <div class="form-buttons">
+        <button id="updateWebsite" class="save-btn">Update</button>
+        <button id="cancelEditWebsite" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dark / light mode toggle logic -->
   <script type="module">
-    // Dark / light mode toggle (your original logic)
     window.addEventListener('DOMContentLoaded', () => {
       const body = document.body;
       const modeToggle = document.getElementById('modeToggle');
@@ -108,11 +132,20 @@
     });
   </script>
 
+  <!-- Firebase + websites logic -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-    import { getDatabase, ref, onValue, push, set } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+    import {
+      getDatabase,
+      ref,
+      onValue,
+      push,
+      set,
+      update,
+      remove
+    } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
-    // Your landing Firebase config
+    // Firebase config for landing project
     const firebaseConfig = {
       apiKey: "AIzaSyBP0QSuhQ2OrWmvzCKIGF-6rd7d62HMYD8",
       authDomain: "landing-87909.firebaseapp.com",
@@ -127,12 +160,11 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Simple admin password (change this)
-    const ADMIN_PASSWORD = '0000';
+    const ADMIN_PASSWORD = '0000'; // change this
 
     const adminToggle = document.getElementById('adminToggle');
-    const addAppButton = document.getElementById('addAppButton');
-    const appsGrid = document.getElementById('appsGrid');
+    const addWebsiteButton = document.getElementById('addWebsiteButton');
+    const websitesGrid = document.getElementById('websitesGrid');
 
     const adminLoginModal = document.getElementById('adminLoginModal');
     const adminLoginClose = document.getElementById('adminLoginClose');
@@ -140,16 +172,29 @@
     const adminLoginConfirm = document.getElementById('adminLoginConfirm');
     const adminPasswordInput = document.getElementById('adminPassword');
 
-    const addAppModal = document.getElementById('addAppModal');
-    const addAppClose = document.getElementById('addAppClose');
-    const cancelApp = document.getElementById('cancelApp');
-    const saveApp = document.getElementById('saveApp');
+    const addWebsiteModal = document.getElementById('addWebsiteModal');
+    const addWebsiteClose = document.getElementById('addWebsiteClose');
+    const cancelWebsite = document.getElementById('cancelWebsite');
+    const saveWebsite = document.getElementById('saveWebsite');
 
-    const appNameInput = document.getElementById('appName');
-    const appDescriptionInput = document.getElementById('appDescription');
-    const appLinkInput = document.getElementById('appLink');
-    const appImageInput = document.getElementById('appImage');
-    const appWipInput = document.getElementById('appWip');
+    const websiteNameInput = document.getElementById('websiteName');
+    const websiteDescriptionInput = document.getElementById('websiteDescription');
+    const websiteLinkInput = document.getElementById('websiteLink');
+    const websiteImageInput = document.getElementById('websiteImage');
+    const websiteWipInput = document.getElementById('websiteWip');
+
+    const editWebsiteModal = document.getElementById('editWebsiteModal');
+    const editWebsiteClose = document.getElementById('editWebsiteClose');
+    const cancelEditWebsite = document.getElementById('cancelEditWebsite');
+    const updateWebsiteBtn = document.getElementById('updateWebsite');
+
+    const editWebsiteName = document.getElementById('editWebsiteName');
+    const editWebsiteDescription = document.getElementById('editWebsiteDescription');
+    const editWebsiteLink = document.getElementById('editWebsiteLink');
+    const editWebsiteImage = document.getElementById('editWebsiteImage');
+    const editWebsiteWip = document.getElementById('editWebsiteWip');
+
+    let editingWebsiteId = null;
 
     function isAdmin() {
       return sessionStorage.getItem('isLandingAdmin') === 'true';
@@ -159,14 +204,14 @@
       if (isAdmin()) {
         adminToggle.classList.add('active');
         adminToggle.textContent = 'Admin (On)';
-        addAppButton.style.display = 'inline-block';
+        addWebsiteButton.style.display = 'inline-block';
         document.querySelectorAll('.admin-only').forEach(el => {
           el.style.display = '';
         });
       } else {
         adminToggle.classList.remove('active');
         adminToggle.textContent = 'Admin';
-        addAppButton.style.display = 'none';
+        addWebsiteButton.style.display = 'none';
         document.querySelectorAll('.admin-only').forEach(el => {
           el.style.display = 'none';
         });
@@ -181,10 +226,9 @@
       modal.classList.remove('active');
     }
 
-    // Admin button
+    // Admin button behavior (like wishlist)
     adminToggle.addEventListener('click', () => {
       if (isAdmin()) {
-        // logout
         sessionStorage.removeItem('isLandingAdmin');
         setAdminUI();
       } else {
@@ -208,36 +252,36 @@
       }
     });
 
-    // Add App modal
-    addAppButton.addEventListener('click', () => {
+    // Add Website modal
+    addWebsiteButton.addEventListener('click', () => {
       if (!isAdmin()) return;
-      appNameInput.value = '';
-      appDescriptionInput.value = '';
-      appLinkInput.value = '';
-      appImageInput.value = '';
-      appWipInput.checked = false;
-      openModal(addAppModal);
+      websiteNameInput.value = '';
+      websiteDescriptionInput.value = '';
+      websiteLinkInput.value = '';
+      websiteImageInput.value = '';
+      websiteWipInput.checked = false;
+      openModal(addWebsiteModal);
     });
 
-    addAppClose.addEventListener('click', () => closeModal(addAppModal));
-    cancelApp.addEventListener('click', () => closeModal(addAppModal));
+    addWebsiteClose.addEventListener('click', () => closeModal(addWebsiteModal));
+    cancelWebsite.addEventListener('click', () => closeModal(addWebsiteModal));
 
-    saveApp.addEventListener('click', async () => {
+    saveWebsite.addEventListener('click', async () => {
       if (!isAdmin()) return;
 
-      const name = appNameInput.value.trim();
-      const description = appDescriptionInput.value.trim();
-      const link = appLinkInput.value.trim();
-      const image = appImageInput.value.trim();
-      const wip = appWipInput.checked;
+      const name = websiteNameInput.value.trim();
+      const description = websiteDescriptionInput.value.trim();
+      const link = websiteLinkInput.value.trim();
+      const image = websiteImageInput.value.trim();
+      const wip = websiteWipInput.checked;
 
       if (!name || !description) {
-        alert('App name and description are required.');
+        alert('Website name and description are required.');
         return;
       }
 
-      const appsRef = ref(db, 'apps');
-      const newRef = push(appsRef);
+      const websitesRef = ref(db, 'websites');
+      const newRef = push(websitesRef);
 
       await set(newRef, {
         name,
@@ -247,78 +291,150 @@
         wip: !!wip
       });
 
-      closeModal(addAppModal);
+      closeModal(addWebsiteModal);
     });
 
-    // Render apps
-    function renderApps(data) {
-      appsGrid.innerHTML = '';
+    // Edit Website modal logic
+    function openEditModal(id, data) {
+      editingWebsiteId = id;
+      editWebsiteName.value = data.name || '';
+      editWebsiteDescription.value = data.description || '';
+      editWebsiteLink.value = data.link || '';
+      editWebsiteImage.value = data.image || '';
+      editWebsiteWip.checked = !!data.wip;
+
+      openModal(editWebsiteModal);
+    }
+
+    editWebsiteClose.addEventListener('click', () => closeModal(editWebsiteModal));
+    cancelEditWebsite.addEventListener('click', () => closeModal(editWebsiteModal));
+
+    updateWebsiteBtn.addEventListener('click', async () => {
+      if (!isAdmin() || !editingWebsiteId) return;
+
+      const name = editWebsiteName.value.trim();
+      const description = editWebsiteDescription.value.trim();
+      const link = editWebsiteLink.value.trim();
+      const image = editWebsiteImage.value.trim();
+      const wip = editWebsiteWip.checked;
+
+      if (!name || !description) {
+        alert('Website name and description are required.');
+        return;
+      }
+
+      const websiteRef = ref(db, 'websites/' + editingWebsiteId);
+
+      await update(websiteRef, {
+        name,
+        description,
+        link,
+        image,
+        wip: !!wip
+      });
+
+      closeModal(editWebsiteModal);
+      editingWebsiteId = null;
+    });
+
+    // Delete website
+    async function deleteWebsite(id) {
+      if (!isAdmin()) return;
+      const confirmed = confirm('Are you sure you want to delete this website?');
+      if (!confirmed) return;
+
+      const websiteRef = ref(db, 'websites/' + id);
+      await remove(websiteRef);
+    }
+
+    // Render websites
+    function renderWebsites(data) {
+      websitesGrid.innerHTML = '';
 
       if (!data) return;
 
       Object.keys(data).forEach(id => {
-        const appData = data[id];
+        const site = data[id];
 
         const card = document.createElement('div');
-        card.className = 'wishlist-item'; // same box style as wishlist
+        card.className = 'wishlist-item';
 
         let html = '';
 
-        // Image (using filename from repo)
-        if (appData.image && appData.image.trim() !== '') {
-          const safeImage = appData.image.trim();
-          html += `<img src="${safeImage}" alt="${appData.name || ''}" class="item-image" onerror="this.style.display='none'">`;
+        // Image
+        if (site.image && site.image.trim() !== '') {
+          const safeImage = site.image.trim();
+          html += `<img src="${safeImage}" alt="${site.name || ''}" class="item-image" onerror="this.style.display='none'">`;
         }
 
-        // Work in progress badge
-        if (appData.wip) {
+        // WIP badge
+        if (site.wip) {
           html += `
             <div style="margin-bottom: 8px;">
-              <span style="
-                background: #facc15;
-                color: #000;
-                padding: 4px 10px;
-                border-radius: 6px;
-                font-size: 0.75em;
-                font-weight: 600;
-              ">WIP</span>
+              <span class="badge-wip">WIP</span>
             </div>
           `;
         }
 
-        // Header (no checkbox, just name)
+        // Header
         html += `
           <div class="item-header">
-            <h3 class="item-name">${appData.name || ''}</h3>
+            <h3 class="item-name">${site.name || ''}</h3>
           </div>
         `;
 
         // Description
-        if (appData.description) {
-          html += `<p class="item-price">${appData.description}</p>`;
+        if (site.description) {
+          html += `<p class="item-price">${site.description}</p>`;
         }
 
-        // Actions (open link)
+        // Actions
         html += `<div class="item-actions">`;
-        if (appData.link) {
-          const safeLink = appData.link;
+        if (site.link) {
+          const safeLink = site.link;
           html += `<a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="item-link">Open</a>`;
         }
+
+        if (isAdmin()) {
+          html += `
+            <button class="item-btn edit-btn" data-id="${id}">Edit</button>
+            <button class="item-btn delete-btn" data-id="${id}">Delete</button>
+          `;
+        }
+
         html += `</div>`;
 
         card.innerHTML = html;
-        appsGrid.appendChild(card);
+        websitesGrid.appendChild(card);
       });
+
+      // Attach edit/delete handlers (only visible when admin)
+      if (isAdmin()) {
+        websitesGrid.querySelectorAll('.edit-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            const siteData = data[id];
+            openEditModal(id, siteData);
+          });
+        });
+
+        websitesGrid.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            deleteWebsite(id);
+          });
+        });
+      }
     }
 
-    // Listen to apps in Firebase
-    const appsRef = ref(db, 'apps');
-    onValue(appsRef, snapshot => {
+    // Firebase listener
+    const websitesRef = ref(db, 'websites');
+    onValue(websitesRef, snapshot => {
       const data = snapshot.val();
-      renderApps(data);
+      renderWebsites(data);
     });
 
-    // Initial admin UI state
+    // Initial admin UI
     setAdminUI();
   </script>
 </body>

@@ -38,8 +38,9 @@
 
   <footer class="footer">
     <a href="https://www.perplexity.ai" class="footer-link" target="_blank" rel="noopener noreferrer">
+      <span class="footer-text">Built with</span>
       <img src="perplexity.png" alt="Perplexity logo" class="perplexity-logo">
-      <span class="footer-text"><strong>PERPLEXITY</strong> BUILT WITH</span>
+      <span class="footer-text"><strong>Perplexity</strong></span>
     </a>
   </footer>
 
@@ -395,6 +396,7 @@
           html += `<a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="item-link">Open</a>`;
         }
 
+        // Only show Edit/Delete if admin is on NOW
         if (isAdmin()) {
           html += `
             <button class="item-btn edit-btn" data-id="${id}">Edit</button>
@@ -408,7 +410,7 @@
         websitesGrid.appendChild(card);
       });
 
-      // Attach edit/delete handlers (only visible when admin)
+      // Attach edit/delete handlers only if admin
       if (isAdmin()) {
         websitesGrid.querySelectorAll('.edit-btn').forEach(btn => {
           btn.addEventListener('click', () => {

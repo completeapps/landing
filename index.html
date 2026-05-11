@@ -1,71 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Complete – A calm home for your tools</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <title>Complete – a collection of small, useful web apps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
-    <header>
+    <header class="site-header">
       <img src="complete.png" alt="Complete logo" class="brand-logo-img">
-      <div class="brand-name">Complete</div>
-      <p class="tagline">
-        A calm home for what you build: planner, calendar, and whatever comes next.
-      </p>
-      <div class="mode-toggle" id="modeToggle" aria-label="Toggle theme" title="Toggle theme">
-        <span class="mode-icon" id="modeIcon">●</span>
-      </div>
+      <button class="mode-toggle" id="modeToggle" aria-label="Toggle light or dark mode">
+        <span class="mode-icon">☾</span>
+      </button>
+      <h1 class="brand-name">COMPLETE</h1>
+      <p class="tagline">a collection for small, useful web apps.</p>
     </header>
 
-    <main>
+    <main class="cards-grid">
       <article class="product-card">
-        <div>
-          <div class="product-meta">Product · Planner</div>
+        <span class="status-badge">Work in progress</span>
+        <div class="product-content">
           <h2 class="product-name">Complete Planner</h2>
           <p class="product-text">
-            A notebook‑style homework planner that lives in your browser. Add assignments, group by class,
-            and see overdue work before it blindsides you.
+            A simple planner in your browser. Add homework, sort it by class,
+            and quickly see what’s coming up and what’s late.
           </p>
         </div>
-        <a
-          class="product-link"
-          href="https://completeapps.github.io/planner/"
-          target="_blank"
-          rel="noopener"
-        >
-          Open Planner →
+        <a class="product-link" href="https://completeapps.github.io/planner/">
+          <span>Open Planner →</span>
         </a>
       </article>
 
       <article class="product-card">
-        <div>
-          <div class="product-meta">Product · Calendar</div>
+        <span class="status-badge">Work in progress</span>
+        <div class="product-content">
           <h2 class="product-name">Complete Calendar</h2>
           <p class="product-text">
-            A calendar that reads from your Complete planner and lays your tasks out on a month, so you
-            can see crunch days and easy days at a glance.
+            A calendar that pulls from the Complete Planner and drops your tasks
+            onto a monthly view, so you can spot busy days and lighter ones fast.
           </p>
         </div>
-        <a
-          class="product-link"
-          href="https://completeapps.github.io/calendar/"
-          target="_blank"
-          rel="noopener"
-        >
-          Open Calendar →
+        <a class="product-link" href="https://completeapps.github.io/calendar/">
+          <span>Open Calendar →</span>
         </a>
       </article>
     </main>
 
-    <footer>
-      <span class="footer-main">
-        Built by a student, for students. Complete is where your school life comes together.
-      </span>
-      <span class="footer-made-with">
-        Made with <a href="https://perplexity.ai" target="_blank" rel="noopener" class="footer-link">Perplexity</a>
-      </span>
+    <footer class="footer">
+      <div class="footer-inner">
+        <img src="perplexity.png" alt="Perplexity logo" class="footer-logo">
+        <span>built by perplexity</span>
+      </div>
     </footer>
   </div>
 

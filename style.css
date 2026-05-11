@@ -48,8 +48,7 @@ body.light {
 }
 
 /* Header */
-
-header {
+.site-header {
   text-align: center;
   margin-bottom: 28px;
   position: relative;
@@ -84,7 +83,6 @@ header {
 }
 
 /* Mode toggle */
-
 .mode-toggle {
   position: absolute;
   top: 0;
@@ -116,20 +114,18 @@ body.light .mode-toggle {
 }
 
 /* Layout */
-
-main {
+.cards-grid {
   display: grid;
   gap: 16px;
 }
 
 @media (min-width: 640px) {
-  main {
+  .cards-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 /* Cards */
-
 .product-card {
   background: var(--bg-elevated);
   border-radius: var(--radius);
@@ -148,17 +144,31 @@ main {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(139, 92, 246, 0.12), transparent 55%);
+  background: radial-gradient(circle at top left,
+    rgba(139, 92, 246, 0.12),
+    transparent 55%);
   opacity: 0.7;
   pointer-events: none;
 }
 
-.product-meta {
+.product-content {
+  position: relative;
+  z-index: 1;
+}
+
+.status-badge {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
   font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--muted);
-  margin-bottom: 4px;
+  letter-spacing: 0.12em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 200, 0, 0.12);
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  margin-bottom: 8px;
 }
 
 .product-name {
@@ -175,6 +185,8 @@ main {
 }
 
 .product-link {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
@@ -201,27 +213,22 @@ body.light .product-link {
 }
 
 /* Footer */
-
-footer {
+.footer {
   margin-top: 24px;
   font-size: 0.8rem;
   color: var(--muted);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  text-align: left;
 }
 
-.footer-link {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.footer-link:hover {
-  text-decoration: underline;
-}
-
-.footer-made-with {
+.footer-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   opacity: 0.85;
-  font-size: 0.78rem;
+}
+
+.footer-logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
